@@ -1,17 +1,27 @@
-# sleep_mind
+# 💤 SleepMind (Flutter + Firebase)
 
-A new Flutter project.
+SleepMind es una aplicación Flutter que integra **Firebase** para autenticación con Google y muestra una **pantalla personalizada con fondo**.  
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Tecnologías utilizadas
+- [Flutter](https://flutter.dev/) (con Material 3)
+- [Firebase Core](https://pub.dev/packages/firebase_core)
+- [Firebase Auth](https://pub.dev/packages/firebase_auth)
+- [Google Sign In](https://pub.dev/packages/google_sign_in)
+- [flutter_dotenv](https://pub.dev/packages/flutter_dotenv) *(opcional, para variables de entorno)*
+- **Assets locales** (para fondos de pantalla e imágenes)
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🔑 Configuración de Firebase
+1. **Inicialización** en `main.dart`:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# flutter_sleep_mind
+```dart
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
+}
