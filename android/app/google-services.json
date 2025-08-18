@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "664485634889",
+    "project_id": "sleepmind-1705d",
+    "storage_bucket": "sleepmind-1705d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664485634889:android:76ff5f197d59298681b098",
+        "android_client_info": {
+          "package_name": "com.example.sleep_mind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "664485634889-1tcqt4p77mtb5vkhmeobpm5u2k0dcu8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sleep_mind",
+            "certificate_hash": "7e86e8a357c00178266ddf3025a0a819a8a0f258"
+          }
+        },
+        {
+          "client_id": "664485634889-to0t22qv1eati32evsuguj7jtnaglu26.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv-QR_TxxG07b7jAvsfgjVR-QXKPw-QjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "664485634889-ddjo5a8lae007u1mt3ebs7j2eot2i9j2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "664485634889-c8tum74dlor0v9fu898ubrtekfch7a2g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sleepMind"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
