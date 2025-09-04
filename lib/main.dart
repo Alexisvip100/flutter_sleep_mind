@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:sleep_mind/auth/screen/google_login_screen.dart';
-
-import 'package:sleep_mind/firebase_options.dart';
+import 'package:sleep_mind/app/injection/di.dart';
+import 'package:sleep_mind/app/config/firebase_options.dart';
+import 'package:sleep_mind/app/config/router/app_routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await initDI();
+
   runApp(const MyApp());
 }
 
@@ -20,15 +22,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
-          titleTextStyle: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255)
-          ),
-          iconTheme: IconThemeData(
-            color: Colors.white
-          ),
-        )
+          titleTextStyle: TextStyle(color: Colors.white),
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+        ),
       ),
-      home:  Scaffold(body: Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/background.jpeg'), fit: BoxFit.cover)),),),
+      initialRoute: AppRoutes.welcome,
+      routes: AppRoutes.routes,
+      onGenerateRoute: AppRoutes.generateRoute,
     );
   }
 }
