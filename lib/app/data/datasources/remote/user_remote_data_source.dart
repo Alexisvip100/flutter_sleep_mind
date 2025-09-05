@@ -1,10 +1,10 @@
 import 'package:sleep_mind/app/domain/entities/models/auth_service.dart';
+import 'package:sleep_mind/app/domain/entities/models/post_user.dart';
 import 'api/api_service.dart';
 
 abstract class UserRemoteDataSource {
   Future<void> syncUserData(AuthUser user);
-  Future<AuthUser?> getUserData(String userId);
-  Future<void> updateUserData(AuthUser user);
+  Future<List<PostUser>> getAllPostUser();
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -33,41 +33,22 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<AuthUser?> getUserData(String userId) async {
+  Future<List<PostUser>> getAllPostUser() async {
     try {
-      final response = await apiService.getUserData(
-        endpoint: '/api/users/$userId',
-      );
-      
-      return AuthUser(
-        user_id: response['user_id'],
-        name: response['name'],
-        email: response['email'],
-        avatar: response['avatar'],
-        is_premium: response['is_premium'] ?? false,
-      );
-    } catch (e) {
-      print('Error getting user data: $e');
-      return null;
-    }
-  }
+      print('🔄 Obteniendo posts del usuario...');
+      final response = await apiService.getUserData(endpoint: '/post');
+      print('✅ Posts obtenidos exitosamente: $response');
 
-  @override
-  Future<void> updateUserData(AuthUser user) async {
-    try {
-      await apiService.postUserData(
-        endpoint: '/api/users/${user.user_id}',
-        data: {
-          'name': user.name,
-          'email': user.email,
-          'avatar': user.avatar,
-          'is_premium': user.is_premium,
-          'updated_at': DateTime.now().toIso8601String(),
-        },
-      );
+      // Convertir la respuesta a lista de PostUser
+      final data = response['data'];
+      if (data['posts'] is List) {
+        final postsList = data['posts'] as List;
+        return postsList.map((post) => PostUser.fromJson(post)).toList();
+      }
+      return [];
     } catch (e) {
-      print('Error updating user data: $e');
-      rethrow;
+      print('❌ Error obteniendo posts del usuario: $e');
+      return [];
     }
   }
 }

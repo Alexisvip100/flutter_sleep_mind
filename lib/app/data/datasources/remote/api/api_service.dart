@@ -38,6 +38,33 @@ class ApiService {
     }
   }
 
+  Future<Map<String, dynamic>> getAllPost({
+    required String endpoint,
+    Map<String, String>? headers,
+  }) async {
+    try {
+      try {
+        final response = await client.get(
+          Uri.parse('$baseUrl$endpoint'),
+          headers: {'Content-Type': 'application/json', ...?headers},
+        );
+
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          return jsonDecode(response.body) as Map<String, dynamic>;
+        } else {
+          throw ApiException(
+            'Error ${response.statusCode}: ${response.body}',
+            response.statusCode,
+          );
+        }
+      } catch (e) {
+        throw ApiException('Network error: $e', 0);
+      }
+    } catch (e) {
+      throw ApiException('Network error: $e', 0);
+    }
+  }
+
   Future<Map<String, dynamic>> getUserData({
     required String endpoint,
     Map<String, String>? headers,
