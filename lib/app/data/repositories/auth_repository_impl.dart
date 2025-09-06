@@ -34,6 +34,6 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   AuthUser? get currentUser => remote.currentUser;
 
-  @override
+
   Future<void> syncUserToApi(AuthUser user) => userRemote.syncUserData(user);
 }

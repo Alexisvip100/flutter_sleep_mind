@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_mind/app/presentation/pages/login/welcome_page.dart';
 import 'package:sleep_mind/app/presentation/pages/login/google_login_screen.dart';
-import 'package:sleep_mind/app/presentation/pages/home.dart';
 import 'package:sleep_mind/app/presentation/widgets/login/auth_guard.dart';
+import 'package:sleep_mind/app/config/router/navbar_app.dart';
 
 class AppRoutes {
   static const String welcome = '/';
@@ -12,7 +12,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
     welcome: (context) => const GuestGuard(child: WelcomePage()),
     login: (context) => const GuestGuard(child: LoginPage()),
-    home: (context) => const AuthGuard(child: HomeScreen()),
+    home: (context) => const AuthGuard(child: NavBarApp()),
   };
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -22,7 +22,9 @@ class AppRoutes {
       case login:
         return MaterialPageRoute(builder: (_) => const GuestGuard(child: LoginPage()));
       case home:
-        return MaterialPageRoute(builder: (_) => const AuthGuard(child: HomeScreen()));
+        return MaterialPageRoute(
+          builder: (_) => const AuthGuard(child: NavBarApp()),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(
