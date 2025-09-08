@@ -31,6 +31,7 @@ class TimelineTile extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.none,
                   letterSpacing: 0.3,
                 ),
               ),

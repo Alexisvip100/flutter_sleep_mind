@@ -28,11 +28,11 @@ class _WelcomePageState extends State<WelcomePage>
     super.initState();
     _c = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 6000),
+      duration: const Duration(milliseconds: 4000),
     );
     _fade = CurvedAnimation(parent: _c, curve: Curves.easeOutCubic);
     _slide = Tween<Offset>(
-      begin: const Offset(0, 0.06),
+      begin: const Offset(0, 0.09),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _c, curve: Curves.easeOutCubic));
 
@@ -45,7 +45,7 @@ class _WelcomePageState extends State<WelcomePage>
 
     // Iniciar animación después de un breve delay
     Future.delayed(
-      const Duration(milliseconds: 150),
+      const Duration(milliseconds: 250),
       _c.forward,
     );
   }
@@ -123,14 +123,33 @@ class _WelcomePageState extends State<WelcomePage>
   Widget _buildOverlayImagesForPage3() {
     // Solo gradiente de color, sin imágenes
     return Positioned.fill(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color.fromARGB(255, 0, 0, 0), Color(0xFF142F4E)],
+      child: Stack(
+        alignment: const Alignment(0, -0.83),
+        children: [
+          SizedBox(
+            height: 400,
+            width: 400,
+            child: Image.asset(
+              'assets/images/points.png',
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: const Color(0xFF142F4E),
+                  child: const Center(
+                    child: Icon(Icons.people, color: Colors.white54, size: 100),
+                  ),
+                );
+              },
+            ),
           ),
-        ),
+          SizedBox(
+            child: Image.asset(
+              'assets/images/slap-hands.png',
+              height: 400,
+              width: 400,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -217,7 +236,7 @@ class _WelcomePageState extends State<WelcomePage>
 
     if (_isOverlayPage) {
       return Padding(
-        padding: const EdgeInsets.only(top: 300.0),
+        padding: const EdgeInsets.only(top: 400.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -230,14 +249,9 @@ class _WelcomePageState extends State<WelcomePage>
                   color: Colors.white,
                   fontSize: 32.0,
                   fontWeight: FontWeight.w900,
-                  shadows: [
-                    Shadow(
-                      offset: Offset(2, 2),
-                      blurRadius: 4,
-                      color: Colors.black54,
-                    ),
-                  ],
+                  decoration: TextDecoration.none,
                 ),
+                
               ),
             ),
             Padding(
@@ -248,13 +262,7 @@ class _WelcomePageState extends State<WelcomePage>
                   color: Colors.white,
                   fontSize: 28.0,
                   fontWeight: FontWeight.w700,
-                  shadows: [
-                    Shadow(
-                      offset: Offset(1, 1),
-                      blurRadius: 2,
-                      color: Colors.black54,
-                    ),
-                  ],
+                  decoration: TextDecoration.none,
                 ),
               ),
             ),
@@ -266,14 +274,8 @@ class _WelcomePageState extends State<WelcomePage>
                 style: const TextStyle(
                   color: Color.fromARGB(174, 255, 255, 255),
                   fontSize: 16.0,
+                  decoration: TextDecoration.none,
                   fontWeight: FontWeight.w600,
-                  shadows: [
-                    Shadow(
-                      offset: Offset(1, 1),
-                      blurRadius: 2,
-                      color: Colors.black54,
-                    ),
-                  ],
                 ),
               ),
             ),
@@ -301,6 +303,7 @@ class _WelcomePageState extends State<WelcomePage>
             style: const TextStyle(
               color: Colors.white,
               fontSize: 30.0,
+              decoration: TextDecoration.none,
               fontWeight: FontWeight.w900,
             ),
           ),
@@ -312,6 +315,7 @@ class _WelcomePageState extends State<WelcomePage>
             pageData.description ?? '',
             style: const TextStyle(
               color: Colors.white,
+              decoration: TextDecoration.none,
               fontSize: 17.0,
               fontWeight: FontWeight.w600,
             ),
@@ -352,7 +356,7 @@ class _WelcomePageState extends State<WelcomePage>
           right: 16,
           top: 230,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.black.withValues(alpha: 0.25),
               borderRadius: BorderRadius.circular(12),
@@ -361,7 +365,8 @@ class _WelcomePageState extends State<WelcomePage>
               'Sigue tu rutina para alcanzar tus objetivos',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 30.0,
+                fontSize: 25.0,
+                decoration: TextDecoration.none,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -405,19 +410,43 @@ class _WelcomePageState extends State<WelcomePage>
     required VoidCallback onTap,
     required double size,
   }) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(122, 156, 198, 1),
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4)),
-        ],
-      ),
-      child: IconButton(
-        iconSize: size,
-        color: Colors.white,
-        icon: Icon(icon),
-        onPressed: onTap,
+    return GestureDetector(
+      onTap: () {
+        // Agregar un pequeño delay para la transición
+        Future.delayed(const Duration(milliseconds: 50), onTap);
+      },
+      child: TweenAnimationBuilder<double>(
+        duration: const Duration(milliseconds: 150),
+        tween: Tween(begin: 1.0, end: 1.0),
+        builder: (context, scale, child) {
+          return Transform.scale(
+            scale: scale,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(122, 156, 198, 1),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 8,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                iconSize: size,
+                color: Colors.white,
+                icon: Icon(icon),
+                onPressed: null, // Deshabilitamos el onPressed del IconButton
+              ),
+            ),
+          );
+        },
+        onEnd: () {
+          // Animación de retroceso cuando se suelta
+          setState(() {});
+        },
       ),
     );
   }

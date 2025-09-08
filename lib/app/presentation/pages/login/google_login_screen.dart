@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_mind/app/injection/di.dart';
-import 'package:sleep_mind/app/domain/entities/models/auth_service.dart';
-import 'package:sleep_mind/app/domain/usecases/auth_state_changes.dart';
 import 'package:sleep_mind/app/domain/usecases/sign_in_with_google.dart';
-import 'package:sleep_mind/app/domain/usecases/sign_out.dart';
+import 'package:sleep_mind/app/presentation/pages/login/welcome_pages_data.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _signIn = sl<SignInWithGoogle>();
-  final _signOut = sl<SignOut>();
-  final _authStates = sl<AuthStateChanges>();
   bool _loading = false;
 
   Future<void> _goHome() async {
@@ -37,12 +35,14 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _logout() async => _signOut();
 
   @override
   Widget build(BuildContext context) {
+    const items = LoginPageData.listItems;
+
     return Scaffold(
       body: Container(
+        width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -52,64 +52,132 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Column(
           children: [
-            // points.png arriba
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/points.png"),
-                    fit: BoxFit.cover,
+            // ================== STACK con background e ítems ==================
+            SizedBox(
+              height: 400,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Imagen de fondo
+                  Container(
+                    height: 400,
+                    width: 400,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/points.png"),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            // login abajo + escucha de sesión
-            Expanded(
-              child: Center(
-                child: _loading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : StreamBuilder<AuthUser?>(
-                        stream: _authStates(),
-                        builder: (context, snap) {
-                          final user = snap.data;
-                          if (user != null) {
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (user.avatar != null)
-                                  CircleAvatar(
-                                    radius: 32,
-                                    backgroundImage: NetworkImage(user.avatar!),
-                                  ),
-                                const SizedBox(height: 12),
-                                Text(user.name ?? 'Sin nombre',
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700)),
-                                Text(user.email ?? '',
-                                    style:
-                                        const TextStyle(color: Colors.white70)),
-                                const SizedBox(height: 16),
-                                ElevatedButton.icon(
-                                  onPressed: _logout,
-                                  icon: const Icon(Icons.logout),
-                                  label: const Text('Cerrar sesión'),
-                                ),
-                                ElevatedButton.icon(
-                                  onPressed: _goHome,
-                                  icon: const Icon(Icons.arrow_forward_rounded),
-                                  label: const Text('Ir a Home'),
+
+                  // Todas las pages encima (sin PageView)
+                  Positioned(
+                    top: 40,
+                    child: Column(
+                      children: [
+                        for (var item in items)
+                          Container(
+                            margin: EdgeInsets.only(
+                              top: 10,
+                              left: item.left ?? 0.0,
+                              right: item.right ?? 0.0,
+                            ),
+                            width: 260,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
                                 ),
                               ],
-                            );
-                          }
-                          return ElevatedButton.icon(
-                            onPressed: _login,
-                            icon: const Icon(Icons.login),
-                            label: const Text('Iniciar sesión con Google'),
-                          );
-                        },
-                      ),
+                            ),
+                            child: Row(
+                              children: [
+                                const SizedBox(width: 8),
+                                Image.asset(
+                                  item.imgGifs ?? '',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(
+                                      Icons.nightlight_round,
+                                      color: Colors.blue,
+                                      size: 40,
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    item.textSleep ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Center(
+              heightFactor: 2.0,
+              child: Column(
+                children: [
+                  const Text(
+                    'Iniciar Sesión',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  _loading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : ElevatedButton.icon(
+                          onPressed: _login,
+                          icon: const FaIcon(
+                            FontAwesomeIcons.google,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          label: const Text(
+                            'Iniciar sesión con Google',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              255,
+                              255,
+                              255,
+                            ),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                  const SizedBox(height: 16),
+
+                  // Opcional: botón de logout si quieres mostrarlo aquí
+                ],
               ),
             ),
           ],

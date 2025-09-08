@@ -39,6 +39,8 @@ dependencies:
   google_sign_in: ^6.2.1
   firebase_auth: ^5.1.4
   persistent_bottom_nav_bar: ^6.2.1
+  font_awesome_flutter: ^10.7.0
+
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +63,10 @@ flutter:
     - assets/images/slap-hands.png
     - assets/images/points.png
     - assets/images/team.png
+    - assets/login_gifs/list_purple.gif
+    - assets/login_gifs/Notification_Bell.gif
+    - assets/login_gifs/Panda_sleep.gif
+    - assets/login_gifs/Sound_Waves.gif
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
